@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111111;
+  color: white;
+}
+
+.landing {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  background:
+    radial-gradient(circle at top, #2a2a2a 0%, #111111 40%, #050505 100%);
+}
+
+.content {
+  max-width: 720px;
+}
+
+.tag {
+  letter-spacing: 8px;
+  font-size: 14px;
+  margin-bottom: 32px;
+  color: #bfbfbf;
+}
+
+h1 {
+  font-size: clamp(48px, 10vw, 110px);
+  line-height: 0.9;
+  margin: 0;
+  letter-spacing: -4px;
+  font-weight: 900;
+}
+
+.subtitle {
+  margin-top: 28px;
+  font-size: 18px;
+  color: #b5b5b5;
+}
+
+.form {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+input {
+  width: 280px;
+  max-width: 100%;
+  padding: 15px 16px;
+  border: 1px solid #444;
+  background: #181818;
+  color: white;
+  border-radius: 4px;
+  outline: none;
+}
+
+input::placeholder {
+  color: #777;
+}
+
+button {
+  padding: 15px 22px;
+  border: none;
+  background: white;
+  color: black;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.instagram {
+  display: inline-block;
+  margin-top: 32px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.instagram:hover {
+  text-decoration: underline;
+}
