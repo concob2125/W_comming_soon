@@ -1,65 +1,50 @@
 /**
- * WEARSHIVER — Bouncing Logo Coming Soon
+ * WEARSHIVER — Bouncing Logo (inside arena rectangle)
  * script.js
- *
- * Handles:
- *  - DVD-style bouncing animation for the logo
- *  - Color shift on each wall collision
- *  - Resize handling so the logo stays inside the viewport
- *  - Mock email form submission
  */
 
 (function bounce() {
-  const el = document.getElementById('bouncer');
+  const arena = document.getElementById('arena');
+  const el    = document.getElementById('bouncer');
 
-  // Speed in pixels per frame (kept gentle, per the brief)
-  const SPEED = 1.6;
+  const SPEED = 1.6; // px per frame
 
-  // Color classes cycled through on impact
   const COLOR_CLASSES = [
-    'bouncer--c0', // off-white
-    'bouncer--c1', // dark red
-    'bouncer--c2', // ice grey-blue
-    'bouncer--c3', // dusty pink
-    'bouncer--c4', // muted acid green
+    'bouncer--c0',
+    'bouncer--c1',
+    'bouncer--c2',
+    'bouncer--c3',
+    'bouncer--c4',
+    'bouncer--c5',
   ];
   let colorIndex = 0;
 
-  // Position + velocity
-  let x = 40;
-  let y = 60;
+  let x = 10;
+  let y = 10;
   let vx = SPEED;
   let vy = SPEED;
 
-  let boxW = el.offsetWidth;
-  let boxH = el.offsetHeight;
-  let viewW = window.innerWidth;
-  let viewH = window.innerHeight;
+  let boxW, boxH, areaW, areaH;
 
   function measure() {
-    boxW = el.offsetWidth;
-    boxH = el.offsetHeight;
-    viewW = window.innerWidth;
-    viewH = window.innerHeight;
+    boxW  = el.offsetWidth;
+    boxH  = el.offsetHeight;
+    areaW = arena.clientWidth;
+    areaH = arena.clientHeight;
 
-    // Clamp current position so the logo never sits outside
-    // the viewport after a resize.
-    x = Math.min(Math.max(x, 0), Math.max(viewW - boxW, 0));
-    y = Math.min(Math.max(y, 0), Math.max(viewH - boxH, 0));
+    x = Math.min(Math.max(x, 0), Math.max(areaW - boxW, 0));
+    y = Math.min(Math.max(y, 0), Math.max(areaH - boxH, 0));
   }
 
   function setColor() {
-    COLOR_CLASSES.forEach(function (cls) {
-      el.classList.remove(cls);
-    });
+    COLOR_CLASSES.forEach(function (cls) { el.classList.remove(cls); });
     el.classList.add(COLOR_CLASSES[colorIndex]);
     colorIndex = (colorIndex + 1) % COLOR_CLASSES.length;
   }
 
-  function triggerHitEffect() {
+  function triggerHit() {
     setColor();
     el.classList.remove('is-hit');
-    // restart animation
     void el.offsetWidth;
     el.classList.add('is-hit');
   }
@@ -74,8 +59,8 @@
       x = 0;
       vx = Math.abs(vx);
       hit = true;
-    } else if (x + boxW >= viewW) {
-      x = viewW - boxW;
+    } else if (x + boxW >= areaW) {
+      x = areaW - boxW;
       vx = -Math.abs(vx);
       hit = true;
     }
@@ -84,28 +69,34 @@
       y = 0;
       vy = Math.abs(vy);
       hit = true;
-    } else if (y + boxH >= viewH) {
-      y = viewH - boxH;
+    } else if (y + boxH >= areaH) {
+      y = areaH - boxH;
       vy = -Math.abs(vy);
       hit = true;
     }
 
-    if (hit) triggerHitEffect();
+    if (hit) triggerHit();
 
     el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
-
     requestAnimationFrame(step);
   }
 
-  // Initial color
   setColor();
 
-  // Wait one frame so layout is settled before measuring
-  requestAnimationFrame(function () {
-    measure();
-    el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
-    requestAnimationFrame(step);
-  });
+  // Wait for image to load + layout before measuring
+  function start() {
+    requestAnimationFrame(function () {
+      measure();
+      el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+      requestAnimationFrame(step);
+    });
+  }
+
+  if (el.complete) {
+    start();
+  } else {
+    el.addEventListener('load', start);
+  }
 
   window.addEventListener('resize', measure);
 })();

@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="WEARSHIVER — Coming Soon. Streetwear pieces. Limited releases. No noise." />
+  <meta name="description" content="WEARSHIVER — Coming Soon" />
   <title>WEARSHIVER</title>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -15,82 +14,47 @@
 </head>
 <body>
 
-  <!-- Noise overlay -->
+  <!-- Noise texture overlay -->
   <div class="noise" aria-hidden="true"></div>
 
-  <!-- Vignette radial light behind title -->
-  <div class="vignette" aria-hidden="true"></div>
+  <!-- Top-left system tag -->
+  <div class="system-tag">
+    <span>DROP_001</span>
+    <span>SHIVER SYSTEM</span>
+    <span>2026</span>
+  </div>
 
-  <!-- Main wrapper -->
   <main class="stage">
 
-    <!-- Archival tag frame (SVG clip-path corners) -->
-    <div class="frame" aria-hidden="true">
-      <span class="frame__corner frame__corner--tl"></span>
-      <span class="frame__corner frame__corner--tr"></span>
-      <span class="frame__corner frame__corner--bl"></span>
-      <span class="frame__corner frame__corner--br"></span>
+    <!-- Bounce arena: the rectangle the logo moves inside -->
+    <div class="arena" id="arena">
+      <img src="assets/logo.png" alt="WEARSHIVER" class="bouncer" id="bouncer" />
     </div>
 
-    <!-- Meta line top -->
-    <div class="meta meta--top">
-      <span class="meta__tag">SHIVER SYSTEM</span>
-      <span class="meta__coord">48°N 002°E / DROP_001</span>
-    </div>
+    <!-- Brand name + subtitle -->
+    <h1 class="brand">WEARSHIVER</h1>
+    <p class="subtitle">Coming Soon</p>
+    <p class="subtext">A new drop is forming in silence.</p>
 
-    <!-- Brand name -->
-    <h1 class="brand" id="brand-title">WEARSHIVER</h1>
-
-    <!-- Divider -->
-    <div class="divider" aria-hidden="true">
-      <span class="divider__line"></span>
-      <span class="divider__dot"></span>
-      <span class="divider__line"></span>
-    </div>
-
-    <!-- Coming soon headline -->
-    <p class="headline">COMING SOON</p>
-
-    <!-- Subtexts -->
-    <p class="subtext subtext--primary">A new drop is forming in silence.</p>
-    <p class="subtext subtext--secondary">Streetwear pieces. Limited releases. No noise.</p>
-
-    <!-- Email form -->
-    <div class="notify" role="form" aria-label="Email notification form">
-      <div class="notify__row" id="notify-form">
+    <!-- Notify stamp -->
+    <div class="stamp" id="stamp">
+      <div class="stamp__row" id="stamp-form">
         <input
-          class="notify__input"
           type="email"
           id="email"
+          class="stamp__input"
           placeholder="Enter your email"
           autocomplete="email"
           aria-label="Email address"
-          required
         />
-        <button class="notify__btn" id="notify-btn" type="button">
-          Notify me
-        </button>
+        <button type="button" id="stamp-btn" class="stamp__btn">Notify me</button>
       </div>
-
-      <!-- Success state (hidden by default) -->
-      <p class="notify__success" id="notify-success" aria-live="polite">
-        You're on the list.
-      </p>
-
-      <p class="notify__hint">Be the first to know.</p>
-    </div>
-
-    <!-- Meta line bottom -->
-    <div class="meta meta--bottom">
-      <span class="meta__coord">UNRELEASED COLLECTION · EST. 2026</span>
+      <p class="stamp__success" id="stamp-success" aria-live="polite">You're on the list.</p>
     </div>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <span>© 2026 WEARSHIVER</span>
-  </footer>
+  <footer class="footer">© 2026 WEARSHIVER</footer>
 
   <script src="script.js"></script>
 </body>
