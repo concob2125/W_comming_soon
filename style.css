@@ -147,8 +147,8 @@ body {
   will-change: transform, background-color;
   transition: background-color 0.3s ease, filter 0.3s ease;
 
-  -webkit-mask-image: url('assets/logo-mask.png');
-  mask-image: url('assets/logo-mask.png');
+  -webkit-mask-image: url('assets/Logo mask.png');
+  mask-image: url('assets/Logo mask.png');
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
