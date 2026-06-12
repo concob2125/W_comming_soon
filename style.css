@@ -93,6 +93,8 @@ body {
    5. Stage
    -------------------------------------------------------------------------- */
 .stage {
+  position: relative;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,50 +104,17 @@ body {
   animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) both;
 }
 
-/* --------------------------------------------------------------------------
-   6. Bounce arena
-   -------------------------------------------------------------------------- */
-.arena {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 46vh;
-  border: 1px solid var(--c-border);
-  margin-bottom: 2.4rem;
-  overflow: hidden;
-}
-
-/* Corner ticks for the arena, archival/lab feel */
-.arena::before,
-.arena::after {
-  content: '';
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-color: var(--c-muted);
-}
-
-.arena::before {
-  top: -1px; left: -1px;
-  border-top: 1px solid var(--c-accent);
-  border-left: 1px solid var(--c-accent);
-}
-
-.arena::after {
-  bottom: -1px; right: -1px;
-  border-bottom: 1px solid var(--c-accent);
-  border-right: 1px solid var(--c-accent);
-}
-
 /* The bouncing logo */
 .bouncer {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: clamp(58px, 15%, 110px);
-  height: clamp(58px, 15%, 110px);
+  z-index: 20;
+  width: clamp(58px, 6vw, 110px);
+  aspect-ratio: 800 / 729;
   --logo-filter: brightness(0) saturate(100%) invert(94%) sepia(8%) saturate(350%) hue-rotate(337deg) brightness(105%) contrast(88%);
   color: var(--hue-0);
+  pointer-events: none;
   will-change: transform;
 }
 
@@ -341,13 +310,8 @@ body {
    11. Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 480px) {
-  .arena {
-    max-height: 32vh;
-  }
-
   .bouncer {
-    width: clamp(42px, 17%, 68px);
-    height: clamp(42px, 17%, 68px);
+    width: clamp(42px, 14vw, 68px);
   }
 
   .stamp__btn {

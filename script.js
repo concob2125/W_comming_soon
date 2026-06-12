@@ -1,13 +1,13 @@
 /**
- * WEARSHIVER — Bouncing Logo (inside arena rectangle)
+ * WEARSHIVER — Floating DVD-style logo
  * script.js
  */
 
 (function bounce() {
-  const arena = document.getElementById('arena');
   const el    = document.getElementById('bouncer');
+  if (!el) return;
 
-  const SPEED = 1.6; // px per frame
+  const SPEED = 1.8; // px per frame
 
   const COLOR_CLASSES = [
     'bouncer--c0',
@@ -19,8 +19,8 @@
   ];
   let colorIndex = 0;
 
-  let x = 10;
-  let y = 10;
+  let x = Math.round(window.innerWidth * 0.18);
+  let y = Math.round(window.innerHeight * 0.18);
   let vx = SPEED;
   let vy = SPEED;
 
@@ -29,8 +29,8 @@
   function measure() {
     boxW  = el.offsetWidth;
     boxH  = el.offsetHeight;
-    areaW = arena.clientWidth;
-    areaH = arena.clientHeight;
+    areaW = window.innerWidth;
+    areaH = window.innerHeight;
 
     x = Math.min(Math.max(x, 0), Math.max(areaW - boxW, 0));
     y = Math.min(Math.max(y, 0), Math.max(areaH - boxH, 0));
