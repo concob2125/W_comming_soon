@@ -1,21 +1,124 @@
 /**
- * WEARSHIVER — Coming Soon
+ * WEARSHIVER — Bouncing Logo Coming Soon
  * script.js
  *
  * Handles:
- *  - Email form submission (mock — no backend)
- *  - Staggered entrance animation for key elements
+ *  - DVD-style bouncing animation for the logo
+ *  - Color shift on each wall collision
+ *  - Resize handling so the logo stays inside the viewport
+ *  - Mock email form submission
  */
 
+(function bounce() {
+  const el = document.getElementById('bouncer');
+
+  // Speed in pixels per frame (kept gentle, per the brief)
+  const SPEED = 1.6;
+
+  // Color classes cycled through on impact
+  const COLOR_CLASSES = [
+    'bouncer--c0', // off-white
+    'bouncer--c1', // dark red
+    'bouncer--c2', // ice grey-blue
+    'bouncer--c3', // dusty pink
+    'bouncer--c4', // muted acid green
+  ];
+  let colorIndex = 0;
+
+  // Position + velocity
+  let x = 40;
+  let y = 60;
+  let vx = SPEED;
+  let vy = SPEED;
+
+  let boxW = el.offsetWidth;
+  let boxH = el.offsetHeight;
+  let viewW = window.innerWidth;
+  let viewH = window.innerHeight;
+
+  function measure() {
+    boxW = el.offsetWidth;
+    boxH = el.offsetHeight;
+    viewW = window.innerWidth;
+    viewH = window.innerHeight;
+
+    // Clamp current position so the logo never sits outside
+    // the viewport after a resize.
+    x = Math.min(Math.max(x, 0), Math.max(viewW - boxW, 0));
+    y = Math.min(Math.max(y, 0), Math.max(viewH - boxH, 0));
+  }
+
+  function setColor() {
+    COLOR_CLASSES.forEach(function (cls) {
+      el.classList.remove(cls);
+    });
+    el.classList.add(COLOR_CLASSES[colorIndex]);
+    colorIndex = (colorIndex + 1) % COLOR_CLASSES.length;
+  }
+
+  function triggerHitEffect() {
+    setColor();
+    el.classList.remove('is-hit');
+    // restart animation
+    void el.offsetWidth;
+    el.classList.add('is-hit');
+  }
+
+  function step() {
+    x += vx;
+    y += vy;
+
+    let hit = false;
+
+    if (x <= 0) {
+      x = 0;
+      vx = Math.abs(vx);
+      hit = true;
+    } else if (x + boxW >= viewW) {
+      x = viewW - boxW;
+      vx = -Math.abs(vx);
+      hit = true;
+    }
+
+    if (y <= 0) {
+      y = 0;
+      vy = Math.abs(vy);
+      hit = true;
+    } else if (y + boxH >= viewH) {
+      y = viewH - boxH;
+      vy = -Math.abs(vy);
+      hit = true;
+    }
+
+    if (hit) triggerHitEffect();
+
+    el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+
+    requestAnimationFrame(step);
+  }
+
+  // Initial color
+  setColor();
+
+  // Wait one frame so layout is settled before measuring
+  requestAnimationFrame(function () {
+    measure();
+    el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+    requestAnimationFrame(step);
+  });
+
+  window.addEventListener('resize', measure);
+})();
+
+
 /* --------------------------------------------------------------------------
-   Email form — mock submission
+   Notify form — mock submission
    -------------------------------------------------------------------------- */
-(function initNotifyForm() {
-  const btn     = document.getElementById('notify-btn');
+(function initStampForm() {
+  const btn     = document.getElementById('stamp-btn');
   const input   = document.getElementById('email');
-  const form    = document.getElementById('notify-form');
-  const success = document.getElementById('notify-success');
-  const hint    = document.querySelector('.notify__hint');
+  const form    = document.getElementById('stamp-form');
+  const success = document.getElementById('stamp-success');
 
   if (!btn || !input || !form || !success) return;
 
@@ -28,71 +131,42 @@
   function handleSubmit() {
     const email = input.value.trim();
 
-    /* Basic email validation */
     if (!isValidEmail(email)) {
-      shakeInput();
+      shake();
       return;
     }
 
-    /* Mock success — replace form row with confirmation */
-    form.style.opacity    = '0';
-    form.style.transition = 'opacity 0.35s ease';
+    form.style.transition = 'opacity 0.3s ease';
+    form.style.opacity = '0';
 
     setTimeout(function () {
-      form.style.display   = 'none';
-      hint.style.display   = 'none';
+      form.style.display = 'none';
       success.classList.add('is-visible');
-    }, 380);
+    }, 300);
   }
 
   function isValidEmail(val) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
   }
 
-  /* Subtle horizontal shake for invalid input */
-  function shakeInput() {
-    const row = document.querySelector('.notify__row');
+  function shake() {
+    const row = document.querySelector('.stamp__row');
     if (!row) return;
 
-    row.style.transition = 'transform 0.06s ease, border-color 0.2s ease';
+    row.style.transition = 'transform 0.05s ease, border-color 0.2s ease';
     row.style.borderColor = '#8b1a1a';
 
     let count = 0;
     const dir = [4, -4, 3, -3, 2, -2, 1, 0];
 
     const interval = setInterval(function () {
-      row.style.transform = `translateX(${dir[count]}px)`;
+      row.style.transform = 'translateX(' + dir[count] + 'px)';
       count++;
       if (count >= dir.length) {
         clearInterval(interval);
-        row.style.transform   = 'translateX(0)';
+        row.style.transform = 'translateX(0)';
         row.style.borderColor = '';
       }
-    }, 55);
+    }, 50);
   }
-})();
-
-
-/* --------------------------------------------------------------------------
-   Staggered entrance — delay each block progressively
-   -------------------------------------------------------------------------- */
-(function staggerEntrance() {
-  const targets = document.querySelectorAll(
-    '.meta--top, .brand, .divider, .headline, .subtext--primary, .subtext--secondary, .notify, .meta--bottom'
-  );
-
-  targets.forEach(function (el, i) {
-    el.style.opacity         = '0';
-    el.style.transform       = 'translateY(12px)';
-    el.style.transition      = 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)';
-    el.style.transitionDelay = (i * 0.085 + 0.1) + 's';
-
-    /* Trigger after a minimal paint delay */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        el.style.opacity   = '1';
-        el.style.transform = 'translateY(0)';
-      });
-    });
-  });
 })();
