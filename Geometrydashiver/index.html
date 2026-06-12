@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function routeOnRefresh() {
+      var allowLoad = sessionStorage.getItem('wearshiver_allow_page_load') === 'true';
 
-    <script>
-  (function () {
-    const allowLoad = sessionStorage.getItem("wearshiver_allow_page_load");
+      if (allowLoad) {
+        sessionStorage.removeItem('wearshiver_allow_page_load');
+        return;
+      }
 
-    if (allowLoad === "true") {
-      sessionStorage.removeItem("wearshiver_allow_page_load");
-      return;
-    }
-
-    sessionStorage.setItem("wearshiver_allow_page_load", "true");
-    localStorage.setItem("wearshiver_last_page", "comingsoon");
-    window.location.replace("../index.html");
-  })();
-</script>
+      if (Math.random() < 0.5) {
+        sessionStorage.setItem('wearshiver_allow_page_load', 'true');
+        window.location.replace('../CommingSoon/index.html');
+      }
+    })();
+  </script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

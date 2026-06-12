@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <head>
   <script>
-    (function () {
-      const allowLoad = sessionStorage.getItem("wearshiver_allow_page_load");
+    (function routeOnRefresh() {
+      var allowLoad = sessionStorage.getItem('wearshiver_allow_page_load') === 'true';
 
-      if (allowLoad === "true") {
-        sessionStorage.removeItem("wearshiver_allow_page_load");
+      if (allowLoad) {
+        sessionStorage.removeItem('wearshiver_allow_page_load');
         return;
       }
 
-      sessionStorage.setItem("wearshiver_allow_page_load", "true");
-      localStorage.setItem("wearshiver_last_page", "geometrydashiver");
-      window.location.replace("../Geometrydashiver/index.html");
+      if (Math.random() < 0.5) {
+        sessionStorage.setItem('wearshiver_allow_page_load', 'true');
+        window.location.replace('../Geometrydashiver/index.html');
+      }
     })();
   </script>
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="WEARSHIVER — Coming Soon" />
