@@ -114,6 +114,7 @@ body {
   aspect-ratio: 800 / 729;
   --logo-filter: brightness(0) saturate(100%) invert(94%) sepia(8%) saturate(350%) hue-rotate(337deg) brightness(105%) contrast(88%);
   color: var(--hue-0);
+  background: transparent;
   pointer-events: none;
   will-change: transform;
 }
@@ -124,6 +125,8 @@ body {
   height: 100%;
   object-fit: contain;
   pointer-events: none;
+  background: transparent;
+  mix-blend-mode: normal;
   filter: var(--logo-filter) drop-shadow(0 0 14px currentColor);
   transition: filter 0.3s ease, opacity 0.3s ease;
 }
