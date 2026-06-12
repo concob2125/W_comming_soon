@@ -7,13 +7,13 @@
 
       if (allowLoad) {
         sessionStorage.removeItem('wearshiver_allow_page_load');
+        sessionStorage.setItem('wearshiver_current_experience', 'comingsoon');
         return;
       }
 
-      if (Math.random() < 0.5) {
-        sessionStorage.setItem('wearshiver_allow_page_load', 'true');
-        window.location.replace('../Geometrydashiver/index.html');
-      }
+      sessionStorage.setItem('wearshiver_allow_page_load', 'true');
+      sessionStorage.setItem('wearshiver_current_experience', 'geometrydashiver');
+      window.location.replace('../Geometrydashiver/index.html');
     })();
   </script>
 
