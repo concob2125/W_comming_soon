@@ -42,11 +42,19 @@
   </div>
 
   <script>
-    (function routeRandomExperience() {
-      var experiences = [
-        'CommingSoon/index.html', 
-      ];
+    (function routeExperience() {
+      var firstVisitDone = sessionStorage.getItem('wearshiver_first_visit_done') === 'true';
+
+      if (!firstVisitDone) {
+        sessionStorage.setItem('wearshiver_first_visit_done', 'true');
+        sessionStorage.setItem('wearshiver_allow_page_load', 'true');
+        window.location.replace('CommingSoon/index.html');
+        return;
+      }
+
+      var experiences = ['CommingSoon/index.html', 'Geometrydashiver/index.html'];
       var selected = experiences[Math.floor(Math.random() * experiences.length)];
+      sessionStorage.setItem('wearshiver_allow_page_load', 'true');
       window.location.replace(selected);
     })();
   </script>
