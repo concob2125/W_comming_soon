@@ -21,6 +21,7 @@
   --hue-4: #a8e0c4; /* muted acid green */
   --hue-5: #4f6d8c; /* steel blue */
 
+  --f-brand:   'Anton', Impact, sans-serif;
   --f-display: 'Bebas Neue', sans-serif;
   --f-body:    'Space Grotesk', sans-serif;
   --f-mono:    'Courier New', Courier, monospace;
@@ -136,37 +137,58 @@ body {
   border-right: 1px solid var(--c-accent);
 }
 
-/* The bouncing logo — rendered via CSS mask so it can be
-   filled with a solid, cycling color (clean palette swaps) */
+/* The bouncing logo */
 .bouncer {
   position: absolute;
   top: 0;
   left: 0;
-  width: clamp(70px, 18%, 130px);
-  height: clamp(70px, 18%, 130px);
-  will-change: transform, background-color;
-  transition: background-color 0.3s ease, filter 0.3s ease;
+  width: clamp(58px, 15%, 110px);
+  height: clamp(58px, 15%, 110px);
+  --logo-filter: brightness(0) saturate(100%) invert(94%) sepia(8%) saturate(350%) hue-rotate(337deg) brightness(105%) contrast(88%);
+  color: var(--hue-0);
+  will-change: transform;
+}
 
-  -webkit-mask-image: url('assets/Logo mask.png');
-  mask-image: url('assets/Logo mask.png');
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-
-  background-color: var(--hue-0);
-  filter: drop-shadow(0 0 14px currentColor);
+.bouncer__logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: var(--logo-filter) drop-shadow(0 0 14px currentColor);
+  transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 /* Color states cycled on impact — solid fills, cold/underground palette */
-.bouncer--c0 { background-color: var(--hue-0); } /* off-white */
-.bouncer--c1 { background-color: var(--hue-1); } /* dark red */
-.bouncer--c2 { background-color: var(--hue-2); } /* ice grey-blue */
-.bouncer--c3 { background-color: var(--hue-3); } /* dusty pink */
-.bouncer--c4 { background-color: var(--hue-4); } /* muted acid green */
-.bouncer--c5 { background-color: var(--hue-5); } /* steel blue */
+.bouncer--c0 {
+  color: var(--hue-0);
+  --logo-filter: brightness(0) saturate(100%) invert(94%) sepia(8%) saturate(350%) hue-rotate(337deg) brightness(105%) contrast(88%);
+}
+
+.bouncer--c1 {
+  color: var(--hue-1);
+  --logo-filter: brightness(0) saturate(100%) invert(15%) sepia(39%) saturate(2473%) hue-rotate(342deg) brightness(88%) contrast(96%);
+}
+
+.bouncer--c2 {
+  color: var(--hue-2);
+  --logo-filter: brightness(0) saturate(100%) invert(49%) sepia(12%) saturate(449%) hue-rotate(160deg) brightness(91%) contrast(86%);
+}
+
+.bouncer--c3 {
+  color: var(--hue-3);
+  --logo-filter: brightness(0) saturate(100%) invert(55%) sepia(17%) saturate(817%) hue-rotate(297deg) brightness(91%) contrast(83%);
+}
+
+.bouncer--c4 {
+  color: var(--hue-4);
+  --logo-filter: brightness(0) saturate(100%) invert(88%) sepia(24%) saturate(428%) hue-rotate(88deg) brightness(94%) contrast(88%);
+}
+
+.bouncer--c5 {
+  color: var(--hue-5);
+  --logo-filter: brightness(0) saturate(100%) invert(40%) sepia(12%) saturate(1059%) hue-rotate(169deg) brightness(91%) contrast(84%);
+}
 
 /* Brief glitch pulse on impact */
 .bouncer.is-hit {
@@ -177,9 +199,9 @@ body {
    7. Brand / headings
    -------------------------------------------------------------------------- */
 .brand {
-  font-family: var(--f-display);
-  font-size: clamp(3.2rem, 14vw, 7rem);
-  letter-spacing: 0.2em;
+  font-family: var(--f-brand);
+  font-size: clamp(3rem, 12vw, 6.6rem);
+  letter-spacing: 0.12em;
   line-height: 1;
   text-transform: uppercase;
   color: var(--c-text);
@@ -309,10 +331,10 @@ body {
 }
 
 @keyframes hitGlitch {
-  0%   { transform: scale(1) skewX(0deg); }
-  35%  { transform: scale(1.08) skewX(3deg); }
-  65%  { transform: scale(0.95) skewX(-3deg); }
-  100% { transform: scale(1) skewX(0deg); }
+  0%   { opacity: 1; }
+  35%  { opacity: 0.82; }
+  65%  { opacity: 1; }
+  100% { opacity: 1; }
 }
 
 /* --------------------------------------------------------------------------
@@ -324,7 +346,8 @@ body {
   }
 
   .bouncer {
-    width: clamp(48px, 20%, 80px);
+    width: clamp(42px, 17%, 68px);
+    height: clamp(42px, 17%, 68px);
   }
 
   .stamp__btn {
