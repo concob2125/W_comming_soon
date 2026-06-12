@@ -83,20 +83,11 @@
 
   setColor();
 
-  // Wait for image to load + layout before measuring
-  function start() {
-    requestAnimationFrame(function () {
-      measure();
-      el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
-      requestAnimationFrame(step);
-    });
-  }
-
-  if (el.complete) {
-    start();
-  } else {
-    el.addEventListener('load', start);
-  }
+  requestAnimationFrame(function () {
+    measure();
+    el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+    requestAnimationFrame(step);
+  });
 
   window.addEventListener('resize', measure);
 })();

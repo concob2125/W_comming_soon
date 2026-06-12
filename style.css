@@ -13,6 +13,14 @@
   --c-border: #2a2a2a;
   --c-accent: #8b1a1a;
 
+  /* Bounce palette — cold, desaturated, streetwear */
+  --hue-0: #f0ede8; /* off-white */
+  --hue-1: #8b1a1a; /* dark red */
+  --hue-2: #6e7a82; /* ice grey-blue */
+  --hue-3: #b06a78; /* dusty pink */
+  --hue-4: #a8e0c4; /* muted acid green */
+  --hue-5: #4f6d8c; /* steel blue */
+
   --f-display: 'Bebas Neue', sans-serif;
   --f-body:    'Space Grotesk', sans-serif;
   --f-mono:    'Courier New', Courier, monospace;
@@ -128,25 +136,37 @@ body {
   border-right: 1px solid var(--c-accent);
 }
 
-/* The bouncing logo image */
+/* The bouncing logo — rendered via CSS mask so it can be
+   filled with a solid, cycling color (clean palette swaps) */
 .bouncer {
   position: absolute;
   top: 0;
   left: 0;
-  width: clamp(64px, 16%, 120px);
-  height: auto;
-  will-change: transform, filter;
-  transition: filter 0.35s ease;
-  filter: hue-rotate(0deg) saturate(1);
+  width: clamp(70px, 18%, 130px);
+  height: clamp(70px, 18%, 130px);
+  will-change: transform, background-color;
+  transition: background-color 0.3s ease, filter 0.3s ease;
+
+  -webkit-mask-image: url('assets/logo-mask.png');
+  mask-image: url('assets/logo-mask.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  background-color: var(--hue-0);
+  filter: drop-shadow(0 0 14px currentColor);
 }
 
-/* Color states cycled on impact */
-.bouncer--c0 { filter: hue-rotate(0deg)    saturate(1);   }
-.bouncer--c1 { filter: hue-rotate(60deg)   saturate(1.3); }
-.bouncer--c2 { filter: hue-rotate(140deg)  saturate(1.2); }
-.bouncer--c3 { filter: hue-rotate(200deg)  saturate(1.3); }
-.bouncer--c4 { filter: hue-rotate(260deg)  saturate(1.3); }
-.bouncer--c5 { filter: hue-rotate(320deg)  saturate(1.3); }
+/* Color states cycled on impact — solid fills, cold/underground palette */
+.bouncer--c0 { background-color: var(--hue-0); } /* off-white */
+.bouncer--c1 { background-color: var(--hue-1); } /* dark red */
+.bouncer--c2 { background-color: var(--hue-2); } /* ice grey-blue */
+.bouncer--c3 { background-color: var(--hue-3); } /* dusty pink */
+.bouncer--c4 { background-color: var(--hue-4); } /* muted acid green */
+.bouncer--c5 { background-color: var(--hue-5); } /* steel blue */
 
 /* Brief glitch pulse on impact */
 .bouncer.is-hit {
