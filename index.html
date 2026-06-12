@@ -3,59 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="WEARSHIVER — Coming Soon" />
+  <meta name="description" content="WEARSHIVER coming soon experience." />
   <title>WEARSHIVER</title>
+  <style>
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background: #050505;
+      color: #f0ede8;
+      font-family: "Courier New", Courier, monospace;
+    }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" />
+    body {
+      display: grid;
+      place-items: center;
+    }
 
-  <link rel="stylesheet" href="style.css" />
+    .fallback {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: #f0ede8;
+    }
+  </style>
 </head>
 <body>
-
-  <!-- Noise texture overlay -->
-  <div class="noise" aria-hidden="true"></div>
-
-  <!-- Floating DVD-style logo -->
-  <div class="bouncer" id="bouncer" role="img" aria-label="WEARSHIVER logo">
-    <img class="bouncer__logo" src="logo-mask.png" alt="" aria-hidden="true" />
+  <div class="fallback">
+    <span>WEARSHIVER</span>
+    <a href="CommingSoon/">Enter system</a>
   </div>
 
-  <!-- Top-left system tag -->
-  <div class="system-tag">
-    <span>DROP_001</span>
-    <span>SHIVER SYSTEM</span>
-    <span>2026</span>
-  </div>
-
-  <main class="stage">
-
-    <!-- Brand name + subtitle -->
-    <h1 class="brand">WEARSHIVER</h1>
-    <p class="subtitle">Coming Soon</p>
-    <p class="subtext">A new drop is forming in silence.</p>
-
-    <!-- Notify stamp -->
-    <div class="stamp" id="stamp">
-      <div class="stamp__row" id="stamp-form">
-        <input
-          type="email"
-          id="email"
-          class="stamp__input"
-          placeholder="Enter your email"
-          autocomplete="email"
-          aria-label="Email address"
-        />
-        <button type="button" id="stamp-btn" class="stamp__btn">Notify me</button>
-      </div>
-      <p class="stamp__success" id="stamp-success" aria-live="polite">You're on the list.</p>
-    </div>
-
-  </main>
-
-  <footer class="footer">© 2026 WEARSHIVER</footer>
-
-  <script src="script.js"></script>
+  <script>
+    (function routeRandomExperience() {
+      var experiences = [
+        'CommingSoon/index.html',
+        'Geometrydashiver/index.html'
+      ];
+      var selected = experiences[Math.floor(Math.random() * experiences.length)];
+      window.location.replace(selected);
+    })();
+  </script>
 </body>
 </html>

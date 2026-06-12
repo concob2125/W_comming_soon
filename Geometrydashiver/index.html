@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script>
+  (function () {
+    const allowLoad = sessionStorage.getItem("wearshiver_allow_page_load");
+
+    if (allowLoad === "true") {
+      sessionStorage.removeItem("wearshiver_allow_page_load");
+      return;
+    }
+
+    sessionStorage.setItem("wearshiver_allow_page_load", "true");
+    localStorage.setItem("wearshiver_last_page", "comingsoon");
+    window.location.replace("../index.html");
+  })();
+</script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="WEARSHIVER coming soon with an interactive background system."
+  />
+  <title>WEARSHIVER | Coming Soon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="game-canvas" aria-hidden="true"></canvas>
+  <div class="field-dim" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <aside class="system-tag" aria-label="System status">
+    <span>DROP_001</span>
+    <span>SHIVER SYSTEM ACTIVE</span>
+    <span id="time-readout">TIME: 00.00</span>
+  </aside>
+
+  <main class="stage">
+    <section class="drop-card" aria-labelledby="brand-title">
+      <div class="drop-card__meta" aria-hidden="true">
+        <span>SIGNAL ACTIVE</span>
+        <span>20/26</span>
+      </div>
+
+      <h1 class="brand" id="brand-title">WEARSHIVER</h1>
+      <p class="subtitle">Coming Soon</p>
+      <p class="subtext">A new drop is forming in silence.</p>
+
+      <form class="stamp" id="stamp-form" novalidate>
+        <div class="stamp__row">
+          <input
+            type="email"
+            id="email"
+            class="stamp__input"
+            placeholder="Enter your email"
+            autocomplete="email"
+            aria-label="Email address"
+          />
+          <button type="submit" class="stamp__btn">Notify me</button>
+        </div>
+        <p class="stamp__hint" id="stamp-hint">Be the first to know.</p>
+        <p class="stamp__success" id="stamp-success" aria-live="polite">
+          You're on the list.
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <p class="reboot-copy" id="reboot-copy" aria-hidden="true">
+    DROP FAILED<br />
+    REBOOTING...
+  </p>
+
+  <footer class="footer">© 2026 WEARSHIVER</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
