@@ -403,6 +403,11 @@ body {
    11. Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
+  .noise {
+    opacity: 0.035;
+    background-size: 420px 420px;
+  }
+
   .hero-content {
     transform: translateY(15px);
   }
@@ -411,6 +416,21 @@ body {
     width: min(520px, 90vw);
     margin-bottom: 20px;
     transform: scaleX(0.94);
+    filter:
+      brightness(1.10)
+      contrast(1.08)
+      drop-shadow(0 0 1px rgba(255, 255, 255, 0.72))
+      drop-shadow(0 0 8px rgba(255, 255, 255, 0.22))
+      drop-shadow(0 0 24px rgba(255, 255, 255, 0.10));
+    animation: none;
+  }
+
+  .bouncer__logo {
+    filter: var(--logo-filter) drop-shadow(0 0 8px currentColor);
+  }
+
+  .instagram-link {
+    backdrop-filter: none;
   }
 }
 
