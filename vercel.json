@@ -1,4 +1,7 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
@@ -11,7 +14,15 @@
       "destination": "/CommingSoon/index.html"
     },
     {
+      "source": "/ComingSoon",
+      "destination": "/CommingSoon/index.html"
+    },
+    {
       "source": "/Geometrydashiver",
+      "destination": "/Geometrydashiver/index.html"
+    },
+    {
+      "source": "/Geometridashiver",
       "destination": "/Geometrydashiver/index.html"
     }
   ]
