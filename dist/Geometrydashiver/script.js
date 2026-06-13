@@ -12,7 +12,7 @@
   logoImage.onload = function () {
     logoReady = true;
   };
-  logoImage.src = 'logo-mask.png';
+  logoImage.src = '/Geometrydashiver/logo-mask.png';
 
   const state = {
     width: 0,

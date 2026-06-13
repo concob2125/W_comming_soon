@@ -38,15 +38,15 @@
 <body>
   <div class="fallback">
     <span>WEARSHIVER</span>
-    <a href="CommingSoon/">Enter system</a>
+    <a href="/CommingSoon/">Enter system</a>
   </div>
 
   <script>
     (function routeExperience() {
       var nextExperience = Math.random() < 0.5 ? 'comingsoon' : 'geometrydashiver';
       var selected = nextExperience === 'geometrydashiver'
-        ? 'Geometrydashiver/index.html'
-        : 'CommingSoon/index.html';
+        ? '/Geometrydashiver/'
+        : '/CommingSoon/';
 
       sessionStorage.setItem('wearshiver_allow_page_load', 'true');
       sessionStorage.setItem('wearshiver_current_experience', nextExperience);
