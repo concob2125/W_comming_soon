@@ -43,18 +43,7 @@
 
   <script>
     (function routeExperience() {
-      var firstVisitDone = sessionStorage.getItem('wearshiver_first_visit_done') === 'true';
-      var currentExperience = sessionStorage.getItem('wearshiver_current_experience');
-
-      if (!firstVisitDone) {
-        sessionStorage.setItem('wearshiver_first_visit_done', 'true');
-        sessionStorage.setItem('wearshiver_allow_page_load', 'true');
-        sessionStorage.setItem('wearshiver_current_experience', 'comingsoon');
-        window.location.replace('CommingSoon/index.html');
-        return;
-      }
-
-      var nextExperience = currentExperience === 'comingsoon' ? 'geometrydashiver' : 'comingsoon';
+      var nextExperience = Math.random() < 0.5 ? 'comingsoon' : 'geometrydashiver';
       var selected = nextExperience === 'geometrydashiver'
         ? 'Geometrydashiver/index.html'
         : 'CommingSoon/index.html';

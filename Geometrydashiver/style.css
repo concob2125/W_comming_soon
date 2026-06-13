@@ -108,7 +108,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: min(640px, 92vw);
+  width: min(920px, 92vw);
   min-height: 100dvh;
   margin: 0 auto;
   padding: 2rem 1.5rem;
@@ -122,24 +122,34 @@ body {
   width: 100%;
 }
 
+.hero-content {
+  transform: translateY(35px);
+}
+
 .drop-card__meta {
   display: none;
 }
 
-.brand {
-  color: var(--c-text);
-  font-family: var(--f-brand);
-  font-size: clamp(3rem, 12vw, 6.6rem);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1;
-  text-transform: uppercase;
-  text-shadow: none;
-  margin-bottom: 0.6rem;
+.hero-logo {
+  width: min(820px, 78vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 28px auto;
+  object-fit: contain;
+  transform: scaleX(0.92);
+  transform-origin: center;
+  filter:
+    brightness(1.12)
+    contrast(1.10)
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.82))
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.30))
+    drop-shadow(0 0 22px rgba(255, 255, 255, 0.15))
+    drop-shadow(0 0 52px rgba(255, 255, 255, 0.07));
+  animation: heroLogoGlow 3.8s ease-in-out infinite;
 }
 
 .subtitle {
-  color: var(--c-muted);
+  color: #8a8a8a;
   font-family: var(--f-display);
   font-size: clamp(1rem, 3.4vw, 1.4rem);
   letter-spacing: 0.5em;
@@ -148,7 +158,7 @@ body {
 }
 
 .subtext {
-  color: var(--c-muted);
+  color: #787878;
   font-family: var(--f-body);
   font-size: clamp(0.7rem, 2vw, 0.8rem);
   letter-spacing: 0.1em;
@@ -166,7 +176,7 @@ body {
 
 .stamp__row {
   display: flex;
-  border: 1px solid var(--c-line);
+  border: 1px solid rgba(240, 237, 232, 0.24);
   background: transparent;
   overflow: hidden;
   transition: border-color 0.25s ease;
@@ -190,7 +200,7 @@ body {
 }
 
 .stamp__input::placeholder {
-  color: var(--c-muted);
+  color: #7b7b7b;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.68rem;
@@ -248,11 +258,53 @@ body {
 
 .refresh-copy {
   margin-top: 1.1rem;
-  color: #343434;
+  color: #4a4a4a;
   font-family: var(--f-mono);
   font-size: 0.58rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+.instagram-link {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.8rem);
+  bottom: clamp(1rem, 3vw, 1.8rem);
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  width: 2.65rem;
+  aspect-ratio: 1;
+  color: rgba(240, 237, 232, 0.78);
+  border: 1px solid rgba(240, 237, 232, 0.18);
+  background: rgba(5, 5, 5, 0.56);
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.06),
+    0 0 28px rgba(139, 26, 26, 0.10);
+  transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.instagram-link svg {
+  width: 1.28rem;
+  height: 1.28rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+
+.instagram-link:hover {
+  color: #f0ede8;
+  border-color: rgba(240, 237, 232, 0.38);
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.14),
+    0 0 34px rgba(176, 106, 120, 0.24);
+  transform: translateY(-2px);
+}
+
+.instagram-link:focus-visible {
+  outline: 1px solid rgba(240, 237, 232, 0.72);
+  outline-offset: 4px;
 }
 
 .reboot-copy {
@@ -282,7 +334,7 @@ body {
   left: 0;
   right: 0;
   z-index: 3;
-  color: #2c2c2c;
+  color: #4a4a4a;
   font-family: var(--f-mono);
   font-size: 0.55rem;
   letter-spacing: 0.18em;
@@ -313,6 +365,40 @@ body.is-hit .stage {
   100% { transform: translate(0, 0); }
 }
 
+@keyframes heroLogoGlow {
+  0%, 100% {
+    filter:
+      brightness(1.10)
+      contrast(1.08)
+      drop-shadow(0 0 1px rgba(255, 255, 255, 0.78))
+      drop-shadow(0 0 8px rgba(255, 255, 255, 0.26))
+      drop-shadow(0 0 22px rgba(255, 255, 255, 0.13))
+      drop-shadow(0 0 52px rgba(255, 255, 255, 0.06));
+  }
+
+  50% {
+    filter:
+      brightness(1.17)
+      contrast(1.13)
+      drop-shadow(0 0 1px rgba(255, 255, 255, 0.90))
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.40))
+      drop-shadow(0 0 32px rgba(255, 255, 255, 0.20))
+      drop-shadow(0 0 72px rgba(255, 255, 255, 0.10));
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    transform: translateY(15px);
+  }
+
+  .hero-logo {
+    width: min(520px, 90vw);
+    margin-bottom: 20px;
+    transform: scaleX(0.94);
+  }
+}
+
 @media (max-width: 640px) {
   body {
     overflow-y: auto;
@@ -326,9 +412,8 @@ body.is-hit .stage {
     width: 100%;
   }
 
-  .brand {
-    font-size: clamp(3rem, 12vw, 6.6rem);
-    letter-spacing: 0.12em;
+  .instagram-link {
+    width: 2.35rem;
   }
 
   .subtitle {
