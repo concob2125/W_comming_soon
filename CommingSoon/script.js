@@ -127,34 +127,89 @@
   const input   = document.getElementById('email');
   const form    = document.getElementById('stamp-form');
   const success = document.getElementById('stamp-success');
+  const SUBSCRIBE_PATH = '/api/subscribe';
 
   if (!btn || !input || !form || !success) return;
 
-  btn.addEventListener('click', handleSubmit);
-
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') handleSubmit();
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    submitEmail('comingsoon');
   });
 
-  function handleSubmit() {
-    const email = input.value.trim();
+  btn.addEventListener('click', function (event) {
+    event.preventDefault();
+    submitEmail('comingsoon');
+  });
+
+  async function submitEmail(source) {
+    const rawEmail = input.value.trim();
+    const email = rawEmail.toLowerCase();
 
     if (!isValidEmail(email)) {
+      showError('Invalid email.');
       shake();
       return;
     }
 
-    form.style.transition = 'opacity 0.3s ease';
-    form.style.opacity = '0';
+    const payload = { email, source };
+    const fetchUrl = getFetchUrl();
 
-    setTimeout(function () {
-      form.style.display = 'none';
-      success.classList.add('is-visible');
-    }, 300);
+    console.log('[subscribe frontend] Fetch URL:', fetchUrl);
+    console.log('[subscribe frontend] Payload:', payload);
+
+    if (window.location.protocol === 'file:') {
+      console.error('[subscribe frontend] This page is running from file://. Start the Express server with npm start and open http://localhost:3000 instead.');
+      showError('Something went wrong. Try again.');
+      return;
+    }
+
+    try {
+      const response = await fetch(fetchUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      console.log('[subscribe frontend] Backend response:', {
+        status: response.status,
+        ok: response.ok,
+        data: data,
+      });
+
+      if (response.ok && data.success) {
+        success.textContent = data.message;
+        success.classList.add('is-visible');
+        form.style.opacity = '0';
+        setTimeout(function () {
+          form.style.display = 'none';
+        }, 300);
+        return;
+      }
+
+      showError(data.message || 'Something went wrong. Try again.');
+    } catch (err) {
+      showError('Something went wrong. Try again.');
+      console.error('[subscribe frontend] Subscribe request failed:', err);
+    }
+  }
+
+  function getFetchUrl() {
+    try {
+      return new URL(SUBSCRIBE_PATH, window.location.origin).href;
+    } catch (err) {
+      return SUBSCRIBE_PATH;
+    }
   }
 
   function isValidEmail(val) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  }
+
+  function showError(message) {
+    success.textContent = message;
+    success.classList.add('is-visible');
+    success.style.color = '#8b1a1a';
   }
 
   function shake() {

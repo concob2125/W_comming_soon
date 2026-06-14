@@ -13,7 +13,7 @@
 
       sessionStorage.setItem('wearshiver_allow_page_load', 'true');
       sessionStorage.setItem('wearshiver_current_experience', 'comingsoon');
-      window.location.replace('/CommingSoon/');
+      window.location.replace('../CommingSoon/index.html');
     })();
   </script>
 
@@ -32,7 +32,7 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="/Geometrydashiver/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <canvas id="game-canvas" aria-hidden="true"></canvas>
@@ -47,13 +47,13 @@
   </aside>
 
   <main class="stage">
-    <section class="drop-card hero-content" aria-label="WEARSHIVER">
+    <section class="drop-card" aria-labelledby="brand-title">
       <div class="drop-card__meta" aria-hidden="true">
         <span>SIGNAL ACTIVE</span>
         <span>20/26</span>
       </div>
 
-      <img src="/assets/wearshiver-logo.png" alt="WEARSHIVER" class="hero-logo">
+      <h1 class="brand" id="brand-title">WEARSHIVER</h1>
       <p class="subtitle">Coming Soon</p>
       <p class="subtext">A new drop is forming in silence.</p>
 
@@ -83,22 +83,9 @@
     REBOOTING...
   </p>
 
-  <a
-    class="instagram-link"
-    href="https://www.instagram.com/wearshiver/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="WEARSHIVER on Instagram"
-  >
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.4" cy="6.6" r="1.1" />
-    </svg>
-  </a>
-
   <footer class="footer">© 2026 WEARSHIVER</footer>
+  <a class="instagram-button" href="https://www.instagram.com/wearshiver/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
 
-  <script src="/Geometrydashiver/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

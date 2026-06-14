@@ -98,19 +98,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  width: min(920px, 92vw);
-  min-height: 100dvh;
+  width: min(640px, 92vw);
   padding: 2rem 1.5rem;
   animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) both;
-}
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translateY(35px);
 }
 
 /* The bouncing logo */
@@ -179,22 +170,14 @@ body {
 /* --------------------------------------------------------------------------
    7. Brand / headings
    -------------------------------------------------------------------------- */
-.hero-logo {
-  width: min(820px, 78vw);
-  height: auto;
-  display: block;
-  margin: 0 auto 28px auto;
-  object-fit: contain;
-  transform: scaleX(0.92);
-  transform-origin: center;
-  filter:
-    brightness(1.12)
-    contrast(1.10)
-    drop-shadow(0 0 1px rgba(255, 255, 255, 0.82))
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.30))
-    drop-shadow(0 0 22px rgba(255, 255, 255, 0.15))
-    drop-shadow(0 0 52px rgba(255, 255, 255, 0.07));
-  animation: heroLogoGlow 3.8s ease-in-out infinite;
+.brand {
+  font-family: var(--f-brand);
+  font-size: clamp(3rem, 12vw, 6.6rem);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--c-text);
+  margin-bottom: 0.6rem;
 }
 
 .subtitle {
@@ -202,7 +185,7 @@ body {
   font-size: clamp(1rem, 3.4vw, 1.4rem);
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: #8a8a8a;
+  color: var(--c-muted);
   margin-bottom: 1.2rem;
 }
 
@@ -211,7 +194,7 @@ body {
   font-size: clamp(0.7rem, 2vw, 0.8rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #787878;
+  color: var(--c-muted);
   margin-bottom: 2.4rem;
 }
 
@@ -226,7 +209,7 @@ body {
 
 .stamp__row {
   display: flex;
-  border: 1px solid #3f3f3f;
+  border: 1px solid var(--c-border);
   overflow: hidden;
   transition: border-color 0.25s ease;
 }
@@ -249,7 +232,7 @@ body {
 }
 
 .stamp__input::placeholder {
-  color: #7b7b7b;
+  color: var(--c-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.68rem;
@@ -300,49 +283,7 @@ body {
   font-size: 0.58rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #4a4a4a;
-}
-
-.instagram-link {
-  position: fixed;
-  right: clamp(1rem, 3vw, 1.8rem);
-  bottom: clamp(1rem, 3vw, 1.8rem);
-  z-index: 30;
-  display: grid;
-  place-items: center;
-  width: 2.65rem;
-  aspect-ratio: 1;
-  color: rgba(240, 237, 232, 0.78);
-  border: 1px solid rgba(240, 237, 232, 0.18);
-  background: rgba(5, 5, 5, 0.56);
-  text-decoration: none;
-  backdrop-filter: blur(8px);
-  box-shadow:
-    0 0 12px rgba(255, 255, 255, 0.06),
-    0 0 28px rgba(139, 26, 26, 0.10);
-  transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.instagram-link svg {
-  width: 1.28rem;
-  height: 1.28rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-}
-
-.instagram-link:hover {
-  color: #f0ede8;
-  border-color: rgba(240, 237, 232, 0.38);
-  box-shadow:
-    0 0 14px rgba(255, 255, 255, 0.14),
-    0 0 34px rgba(176, 106, 120, 0.24);
-  transform: translateY(-2px);
-}
-
-.instagram-link:focus-visible {
-  outline: 1px solid rgba(240, 237, 232, 0.72);
-  outline-offset: 4px;
+  color: #343434;
 }
 
 /* --------------------------------------------------------------------------
@@ -358,8 +299,35 @@ body {
   font-size: 0.55rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #4a4a4a;
+  color: #2c2c2c;
   z-index: 3;
+}
+
+.instagram-button {
+  position: fixed;
+  right: 1.4rem;
+  bottom: 3.5rem;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(240, 237, 232, 0.18);
+  color: var(--c-text);
+  background: rgba(5, 5, 5, 0.88);
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.instagram-button:hover {
+  border-color: var(--c-accent);
+  background: rgba(139, 26, 26, 0.16);
+  transform: translateY(-1px);
 }
 
 /* --------------------------------------------------------------------------
@@ -377,70 +345,12 @@ body {
   100% { opacity: 1; }
 }
 
-@keyframes heroLogoGlow {
-  0%, 100% {
-    filter:
-      brightness(1.10)
-      contrast(1.08)
-      drop-shadow(0 0 1px rgba(255, 255, 255, 0.78))
-      drop-shadow(0 0 8px rgba(255, 255, 255, 0.26))
-      drop-shadow(0 0 22px rgba(255, 255, 255, 0.13))
-      drop-shadow(0 0 52px rgba(255, 255, 255, 0.06));
-  }
-
-  50% {
-    filter:
-      brightness(1.17)
-      contrast(1.13)
-      drop-shadow(0 0 1px rgba(255, 255, 255, 0.90))
-      drop-shadow(0 0 12px rgba(255, 255, 255, 0.40))
-      drop-shadow(0 0 32px rgba(255, 255, 255, 0.20))
-      drop-shadow(0 0 72px rgba(255, 255, 255, 0.10));
-  }
-}
-
 /* --------------------------------------------------------------------------
    11. Responsive
    -------------------------------------------------------------------------- */
-@media (max-width: 768px) {
-  .noise {
-    opacity: 0.035;
-    background-size: 420px 420px;
-  }
-
-  .hero-content {
-    transform: translateY(15px);
-  }
-
-  .hero-logo {
-    width: min(520px, 90vw);
-    margin-bottom: 20px;
-    transform: scaleX(0.94);
-    filter:
-      brightness(1.10)
-      contrast(1.08)
-      drop-shadow(0 0 1px rgba(255, 255, 255, 0.72))
-      drop-shadow(0 0 8px rgba(255, 255, 255, 0.22))
-      drop-shadow(0 0 24px rgba(255, 255, 255, 0.10));
-    animation: none;
-  }
-
-  .bouncer__logo {
-    filter: var(--logo-filter) drop-shadow(0 0 8px currentColor);
-  }
-
-  .instagram-link {
-    backdrop-filter: none;
-  }
-}
-
 @media (max-width: 480px) {
   .bouncer {
     width: clamp(42px, 14vw, 68px);
-  }
-
-  .instagram-link {
-    width: 2.35rem;
   }
 
   .stamp__btn {
@@ -453,7 +363,6 @@ body {
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .stage,
-  .hero-logo,
   .stamp__success.is-visible {
     animation: none;
   }
