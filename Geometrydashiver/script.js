@@ -6,6 +6,7 @@
   const form = document.getElementById('stamp-form');
   const email = document.getElementById('email');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const smallScreen = window.matchMedia('(max-width: 640px)');
   const logoImage = new Image();
   const SUBSCRIBE_PATH = '/api/subscribe';
   let logoReady = false;
@@ -32,6 +33,8 @@
     items: [],
     particles: [],
     trails: [],
+    isMobile: false,
+    lastTimerUpdate: 0,
   };
 
   const player = {
@@ -56,7 +59,8 @@
   ];
 
   function resize() {
-    state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    state.isMobile = smallScreen.matches;
+    state.dpr = Math.min(window.devicePixelRatio || 1, state.isMobile ? 1.25 : 2);
     state.width = window.innerWidth;
     state.height = window.innerHeight;
     canvas.width = Math.floor(state.width * state.dpr);
@@ -65,10 +69,10 @@
     canvas.style.height = state.height + 'px';
     ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
 
-    player.size = clamp(state.width * 0.044, 44, 68);
-    player.x = clamp(state.width * 0.17, 70, 188);
+    player.size = state.isMobile ? clamp(state.width * 0.12, 40, 54) : clamp(state.width * 0.044, 44, 68);
+    player.x = state.isMobile ? clamp(state.width * 0.16, 48, 82) : clamp(state.width * 0.17, 70, 188);
     state.groundY = Math.round(state.height * 0.73);
-    state.speed = reducedMotion.matches ? 1.15 : clamp(state.width * 0.0045, 4.6, 7.8);
+    state.speed = reducedMotion.matches ? 1.15 : clamp(state.width * (state.isMobile ? 0.009 : 0.0045), 3.4, state.isMobile ? 5.2 : 7.8);
 
     if (player.grounded || player.y > state.groundY - player.size) {
       player.y = state.groundY - player.size;
@@ -91,7 +95,8 @@
   function resetPatterns() {
     state.items = [];
     state.nextPatternX = state.width + 220;
-    while (state.nextPatternX < state.width + 2300) addPattern();
+    const patternAhead = state.isMobile ? 1200 : 2300;
+    while (state.nextPatternX < state.width + patternAhead) addPattern();
   }
 
   function addPattern() {
@@ -209,7 +214,9 @@
   }
 
   function burst(x, y, count, mode) {
+    const particleCount = state.isMobile ? Math.ceil(count * 0.45) : count;
     for (let i = 0; i < count; i++) {
+      if (i >= particleCount) break;
       state.particles.push({
         x,
         y,
@@ -220,15 +227,24 @@
         color: mode === 'hit' && i % 2 ? '#8b1a1a' : '#d9f0f7',
       });
     }
+
+    if (state.particles.length > 90) {
+      state.particles.splice(0, state.particles.length - 90);
+    }
   }
 
   function pulseTrail() {
+    if (state.isMobile && state.trails.length > 1) return;
     state.trails.push({
       x: player.x + player.size / 2,
       y: player.y + player.size / 2,
       r: player.size * 0.65,
       life: 1,
     });
+
+    if (state.trails.length > 8) {
+      state.trails.splice(0, state.trails.length - 8);
+    }
   }
 
   function triggerHit() {
@@ -258,7 +274,7 @@
     state.particles = [];
     state.trails = [];
     resetPatterns();
-    updateTimer();
+    updateTimer(true);
     document.body.classList.remove('is-hit');
     rebootCopy.classList.remove('is-visible');
   }
@@ -284,8 +300,10 @@
     updateTrails(dt);
   }
 
-  function updateTimer() {
+  function updateTimer(force) {
     if (!timeReadout) return;
+    if (!force && state.time - state.lastTimerUpdate < 0.04) return;
+    state.lastTimerUpdate = state.time;
     timeReadout.textContent = 'TIME: ' + state.time.toFixed(2).padStart(5, '0');
   }
 
@@ -300,7 +318,8 @@
     });
 
     state.nextPatternX -= frameSpeed;
-    while (state.nextPatternX < state.width + 2200) addPattern();
+    const patternAhead = state.isMobile ? 1120 : 2200;
+    while (state.nextPatternX < state.width + patternAhead) addPattern();
   }
 
   function movePlayer(dt) {
@@ -419,11 +438,11 @@
 
   function drawBackgroundGrid() {
     ctx.save();
-    ctx.globalAlpha = 0.32;
+    ctx.globalAlpha = state.isMobile ? 0.2 : 0.32;
     ctx.strokeStyle = 'rgba(185, 221, 237, 0.06)';
     ctx.lineWidth = 1;
 
-    const spacing = 56;
+    const spacing = state.isMobile ? 76 : 56;
     const offset = -(state.time * state.speed * 60) % spacing;
     for (let x = offset; x < state.width + spacing; x += spacing) {
       ctx.beginPath();
@@ -432,7 +451,8 @@
       ctx.stroke();
     }
 
-    for (let y = state.height * 0.2; y < state.height; y += 48) {
+    const rowSpacing = state.isMobile ? 68 : 48;
+    for (let y = state.height * 0.2; y < state.height; y += rowSpacing) {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(state.width, y);
@@ -449,7 +469,7 @@
     ctx.strokeStyle = 'rgba(217, 240, 247, ' + (0.34 + pulse * 0.26) + ')';
     ctx.lineWidth = 1.5 + state.jumpFlash * 1.4;
     ctx.shadowColor = '#b9dded';
-    ctx.shadowBlur = 16 + state.jumpFlash * 32;
+    ctx.shadowBlur = state.isMobile ? 8 + state.jumpFlash * 12 : 16 + state.jumpFlash * 32;
     ctx.beginPath();
     ctx.moveTo(0, state.groundY + 0.5);
     ctx.lineTo(state.width, state.groundY + 0.5);
@@ -463,7 +483,7 @@
       const active = Math.floor((x - offset) / dash) % 4 === 0;
       ctx.fillStyle = active ? 'rgba(185, 221, 237, 0.34)' : 'rgba(240, 237, 232, 0.12)';
       ctx.shadowColor = '#b9dded';
-      ctx.shadowBlur = active ? 10 : 2;
+      ctx.shadowBlur = state.isMobile ? 0 : active ? 10 : 2;
       ctx.fillRect(x, state.groundY + 13, 14, 1);
       ctx.fillRect(x + 9, state.groundY + 27, 30, 1);
     }
@@ -480,7 +500,7 @@
   function drawSpike(item) {
     ctx.save();
     ctx.shadowColor = item.react > 0.5 ? '#d9f0f7' : '#8b1a1a';
-    ctx.shadowBlur = 14 + item.react * 24;
+    ctx.shadowBlur = state.isMobile ? 6 + item.react * 8 : 14 + item.react * 24;
     ctx.strokeStyle = 'rgba(217, 240, 247, ' + (0.5 + item.react * 0.38) + ')';
     ctx.fillStyle = 'rgba(139, 26, 26, 0.68)';
     ctx.lineWidth = 1.5;
@@ -497,8 +517,9 @@
   function drawSolid(item) {
     ctx.save();
     const isPlatform = item.type === 'platform';
-    const cols = Math.max(1, Math.round(item.w / (player.size * 0.48)));
-    const rows = Math.max(1, Math.round(item.h / (player.size * 0.48)));
+    const detail = state.isMobile ? 0.72 : 0.48;
+    const cols = Math.max(1, Math.round(item.w / (player.size * detail)));
+    const rows = Math.max(1, Math.round(item.h / (player.size * detail)));
     const cellW = item.w / cols;
     const cellH = item.h / rows;
 
@@ -508,12 +529,12 @@
     ctx.strokeRect(item.x, item.y, item.w, item.h);
 
     ctx.shadowColor = '#d9f0f7';
-    ctx.shadowBlur = isPlatform ? 24 + item.react * 18 : 20 + item.react * 18;
+    ctx.shadowBlur = state.isMobile ? 6 + item.react * 8 : isPlatform ? 24 + item.react * 18 : 20 + item.react * 18;
     ctx.strokeStyle = 'rgba(217, 240, 247, ' + (0.72 + item.react * 0.22) + ')';
     ctx.lineWidth = 1.8;
     ctx.strokeRect(item.x, item.y, item.w, item.h);
 
-    ctx.shadowBlur = 8 + item.react * 10;
+    ctx.shadowBlur = state.isMobile ? 0 : 8 + item.react * 10;
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'rgba(217, 240, 247, ' + (0.42 + item.react * 0.26) + ')';
 
@@ -554,12 +575,16 @@
   }
 
   function drawTrails() {
+    if (state.isMobile && state.trails.length > 3) {
+      state.trails.splice(0, state.trails.length - 3);
+    }
+
     state.trails.forEach(function (trail) {
       ctx.save();
       ctx.globalAlpha = trail.life * 0.34;
       ctx.strokeStyle = '#d9f0f7';
       ctx.shadowColor = '#b9dded';
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = state.isMobile ? 6 : 18;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(trail.x, trail.y, trail.r, 0, Math.PI * 2);
@@ -579,15 +604,17 @@
     ctx.translate(centerX, centerY);
     ctx.rotate(player.rotation);
     ctx.shadowColor = '#d9f0f7';
-    ctx.shadowBlur = 20 + glow * 38;
+    ctx.shadowBlur = state.isMobile ? 10 + glow * 14 : 20 + glow * 38;
 
     if (logoReady) {
       ctx.globalAlpha = 0.95;
       ctx.drawImage(logoImage, -visualW / 2, -visualH / 2, visualW, visualH);
 
       ctx.globalAlpha = 0.22 + player.glow * 0.18;
-      ctx.shadowBlur = 34 + glow * 38;
-      ctx.drawImage(logoImage, -visualW / 2, -visualH / 2, visualW, visualH);
+      if (!state.isMobile) {
+        ctx.shadowBlur = 34 + glow * 38;
+        ctx.drawImage(logoImage, -visualW / 2, -visualH / 2, visualW, visualH);
+      }
     } else {
       ctx.fillStyle = '#f7f3ec';
       ctx.fillRect(-player.size / 2, -player.size / 2, player.size, player.size);
@@ -602,7 +629,7 @@
       ctx.globalAlpha = Math.max(0, p.life);
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = state.isMobile ? 0 : 12;
       ctx.fillRect(p.x, p.y, p.size, p.size);
       ctx.restore();
     });
@@ -652,11 +679,21 @@
     requestJump();
   });
 
-  window.addEventListener('resize', resize);
+  let resizeFrame = 0;
+  function requestResize() {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(function () {
+      resizeFrame = 0;
+      resize();
+    });
+  }
+
+  window.addEventListener('resize', requestResize);
   reducedMotion.addEventListener('change', resize);
+  smallScreen.addEventListener('change', resize);
 
   resize();
-  updateTimer();
+  updateTimer(true);
   requestAnimationFrame(tick);
 
   form.addEventListener('submit', async function (event) {

@@ -98,9 +98,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  width: min(640px, 92vw);
-  padding: 2rem 1.5rem;
+  width: min(880px, 92vw);
+  min-height: 100dvh;
+  padding: clamp(5rem, 12vh, 8rem) 1.5rem 4.5rem;
   animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) both;
 }
 
@@ -171,13 +173,21 @@ body {
    7. Brand / headings
    -------------------------------------------------------------------------- */
 .brand {
-  font-family: var(--f-brand);
-  font-size: clamp(3rem, 12vw, 6.6rem);
-  letter-spacing: 0.12em;
+  width: min(760px, 76vw);
+  margin-bottom: clamp(1.2rem, 4vh, 2.1rem);
   line-height: 1;
-  text-transform: uppercase;
-  color: var(--c-text);
-  margin-bottom: 0.6rem;
+}
+
+.brand__logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 7px rgba(240, 237, 232, 0.72))
+    drop-shadow(0 0 22px rgba(240, 237, 232, 0.3))
+    drop-shadow(0 0 44px rgba(185, 221, 237, 0.12));
+  transform: translateZ(0);
 }
 
 .subtitle {
@@ -212,6 +222,7 @@ body {
   border: 1px solid var(--c-border);
   overflow: hidden;
   transition: border-color 0.25s ease;
+  max-width: min(100%, 430px);
 }
 
 .stamp__row:focus-within {
@@ -349,12 +360,74 @@ body {
    11. Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 480px) {
+  .noise {
+    opacity: 0.035;
+    background-size: 220px 220px;
+  }
+
+  .system-tag {
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.52rem;
+  }
+
+  .stage {
+    width: min(100%, 94vw);
+    padding: 5.5rem 1rem 5rem;
+  }
+
+  .brand {
+    width: min(94vw, 430px);
+    margin-bottom: 1.35rem;
+  }
+
+  .brand__logo {
+    filter:
+      drop-shadow(0 0 5px rgba(240, 237, 232, 0.68))
+      drop-shadow(0 0 17px rgba(240, 237, 232, 0.24));
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    letter-spacing: 0.38em;
+    padding-left: 0.38em;
+  }
+
+  .subtext {
+    max-width: 18rem;
+    margin-bottom: 1.7rem;
+    line-height: 1.65;
+  }
+
+  .stamp,
+  .stamp__row {
+    width: min(100%, 21rem);
+  }
+
+  .stamp__row {
+    flex-direction: column;
+  }
+
+  .stamp__input {
+    width: 100%;
+    text-align: center;
+  }
+
   .bouncer {
     width: clamp(42px, 14vw, 68px);
   }
 
   .stamp__btn {
+    width: 100%;
     padding: 0.8rem 0.9rem;
+  }
+
+  .instagram-button {
+    right: 1rem;
+    bottom: 2.7rem;
+    min-width: 0;
+    padding: 0.7rem 0.85rem;
+    font-size: 0.58rem;
   }
 }
 

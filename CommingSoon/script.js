@@ -8,7 +8,8 @@
   const timer = document.getElementById('corner-timer');
   if (!el) return;
 
-  const SPEED = 1.8; // px per frame
+  const isSmallScreen = window.matchMedia('(max-width: 640px)');
+  const SPEED = isSmallScreen.matches ? 96 : 112; // px per second
 
   const COLOR_CLASSES = [
     'bouncer--c0',
@@ -26,6 +27,9 @@
   let vy = SPEED;
   let elapsed = 0;
   let lastTime = 0;
+  let lastTimerUpdate = 0;
+  let resizeFrame = 0;
+  let hitTimer = 0;
 
   let boxW, boxH, areaW, areaH;
 
@@ -48,23 +52,31 @@
   function triggerHit() {
     setColor();
     el.classList.remove('is-hit');
-    void el.offsetWidth;
-    el.classList.add('is-hit');
+    if (hitTimer) window.clearTimeout(hitTimer);
+    requestAnimationFrame(function () {
+      el.classList.add('is-hit');
+      hitTimer = window.setTimeout(function () {
+        el.classList.remove('is-hit');
+      }, 220);
+    });
   }
 
-  function updateTimer() {
+  function updateTimer(force) {
     if (!timer) return;
+    if (!force && elapsed - lastTimerUpdate < 0.04) return;
+    lastTimerUpdate = elapsed;
     timer.textContent = 'TIME: ' + elapsed.toFixed(2).padStart(5, '0');
   }
 
   function step(time) {
     if (!lastTime) lastTime = time;
-    elapsed += (time - lastTime) / 1000;
+    const dt = Math.min((time - lastTime) / 1000, 0.05);
+    elapsed += dt;
     lastTime = time;
     updateTimer();
 
-    x += vx;
-    y += vy;
+    x += vx * dt;
+    y += vy * dt;
 
     let hit = false;
     let hitX = false;
@@ -98,7 +110,7 @@
       triggerHit();
       if (hitX && hitY) {
         elapsed = 0;
-        updateTimer();
+        updateTimer(true);
       }
     }
 
@@ -107,7 +119,7 @@
   }
 
   setColor();
-  updateTimer();
+  updateTimer(true);
 
   requestAnimationFrame(function () {
     measure();
@@ -115,12 +127,18 @@
     requestAnimationFrame(step);
   });
 
-  window.addEventListener('resize', measure);
+  window.addEventListener('resize', function () {
+    if (resizeFrame) return;
+    resizeFrame = requestAnimationFrame(function () {
+      resizeFrame = 0;
+      measure();
+    });
+  });
 })();
 
 
 /* --------------------------------------------------------------------------
-   Notify form — mock submission
+   Notify form
    -------------------------------------------------------------------------- */
 (function initStampForm() {
   const btn     = document.getElementById('stamp-btn');
