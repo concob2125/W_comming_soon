@@ -38,6 +38,7 @@
 
 html, body {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -49,7 +50,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -113,6 +114,7 @@ body {
   left: 0;
   z-index: 20;
   width: clamp(58px, 6vw, 110px);
+  max-width: calc(100vw - 32px);
   aspect-ratio: 800 / 729;
   --logo-filter: brightness(0) saturate(100%) invert(94%) sepia(8%) saturate(350%) hue-rotate(337deg) brightness(105%) contrast(88%);
   color: var(--hue-0);
@@ -414,7 +416,8 @@ body {
   }
 
   .bouncer {
-    width: clamp(42px, 14vw, 68px);
+    width: clamp(38px, 12vw, 54px);
+    max-width: calc(100vw - 32px);
   }
 
   .stamp__btn {

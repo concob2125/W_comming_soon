@@ -9,7 +9,7 @@
   if (!el) return;
 
   const isSmallScreen = window.matchMedia('(max-width: 640px)');
-  const SPEED = isSmallScreen.matches ? 96 : 112; // px per second
+  const SPEED = isSmallScreen.matches ? 88 : 112; // px per second
 
   const COLOR_CLASSES = [
     'bouncer--c0',
@@ -31,16 +31,33 @@
   let resizeFrame = 0;
   let hitTimer = 0;
 
-  let boxW, boxH, areaW, areaH;
+  let boxW, boxH, areaW, areaH, minX, maxX, minY, maxY;
+
+  function getViewportSize() {
+    const viewport = window.visualViewport;
+
+    return {
+      width: Math.floor(viewport ? viewport.width : window.innerWidth),
+      height: Math.floor(viewport ? viewport.height : window.innerHeight),
+    };
+  }
 
   function measure() {
     boxW  = el.offsetWidth;
     boxH  = el.offsetHeight;
-    areaW = window.innerWidth;
-    areaH = window.innerHeight;
+    const viewportSize = getViewportSize();
+    areaW = viewportSize.width;
+    areaH = viewportSize.height;
 
-    x = Math.min(Math.max(x, 0), Math.max(areaW - boxW, 0));
-    y = Math.min(Math.max(y, 0), Math.max(areaH - boxH, 0));
+    const safeMargin = isSmallScreen.matches ? 16 : 0;
+    minX = safeMargin;
+    minY = safeMargin;
+    maxX = Math.max(minX, areaW - boxW - safeMargin);
+    maxY = Math.max(minY, areaH - boxH - safeMargin);
+
+    x = Math.min(Math.max(x, minX), maxX);
+    y = Math.min(Math.max(y, minY), maxY);
+    el.style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
   }
 
   function setColor() {
@@ -82,25 +99,25 @@
     let hitX = false;
     let hitY = false;
 
-    if (x <= 0) {
-      x = 0;
+    if (x <= minX) {
+      x = minX;
       vx = Math.abs(vx);
       hit = true;
       hitX = true;
-    } else if (x + boxW >= areaW) {
-      x = areaW - boxW;
+    } else if (x >= maxX) {
+      x = maxX;
       vx = -Math.abs(vx);
       hit = true;
       hitX = true;
     }
 
-    if (y <= 0) {
-      y = 0;
+    if (y <= minY) {
+      y = minY;
       vy = Math.abs(vy);
       hit = true;
       hitY = true;
-    } else if (y + boxH >= areaH) {
-      y = areaH - boxH;
+    } else if (y >= maxY) {
+      y = maxY;
       vy = -Math.abs(vy);
       hit = true;
       hitY = true;
@@ -134,6 +151,20 @@
       measure();
     });
   });
+
+  window.addEventListener('orientationchange', function () {
+    window.setTimeout(measure, 120);
+  });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () {
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(function () {
+        resizeFrame = 0;
+        measure();
+      });
+    });
+  }
 })();
 
 
